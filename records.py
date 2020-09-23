@@ -1,18 +1,21 @@
 import sqlite3
+"""basic SQLITE Database with add, delete, search, update, and display features. uses
+    context manager (with) and Parameterized Statements in appropiate places.
+     uses errer handling as well"""
 
-db = 'record_db.sqlite' # 
+db = 'record_db.sqlite' 
 
 
 def create_table():
     try:
-        with sqlite3.connect(db) as conn:
+        with sqlite3.connect(db) as conn:# connect to the database file or create one if it doesn't exist
             conn.execute('CREATE TABLE IF NOT EXISTS records (Name text, Country text, Catches integer)')
     except sqlite3.Error as e:
         print(f'error creating table because {e}')
     finally:
         conn.close()
 
- #       
+ # this function adds       
 def add_test_data():
     records_info = [("Janne Mustonen", "Finland", 98),
                 ("Ian Stewart", "Canada", 94),
@@ -40,7 +43,7 @@ def add_record():
         conn.close()
 
 def search_record():
-    holder_name = input("Enter record holder name? ")
+    holder_name = input("Enter record holder name to be searched ? ")
     try:
         conn = sqlite3.connect(db)
         res = conn.execute('SELECT * FROM records WHERE name = ?', (holder_name, ))
